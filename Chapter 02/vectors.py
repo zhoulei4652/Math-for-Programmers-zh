@@ -29,7 +29,11 @@ def scale(scalar,v):
     return (scalar * v[0], scalar * v[1])
 
 def to_cartesian(polar_vector):
+    """
+    将极坐标向量转换为笛卡尔坐标向量
+    """
     length, angle = polar_vector[0], polar_vector[1]
+    # 用三角函数计算 x = 长度 × cos(角度)，y = 长度 × sin(角度)
     return (length*cos(angle), length*sin(angle))
 
 def rotate(angle, vectors):
