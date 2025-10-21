@@ -10,15 +10,43 @@ from colors import *
 
 ## https://stackoverflow.com/a/22867877/1704140
 class FancyArrow3D(FancyArrowPatch):
+    """
+    下边的代码增加了do_3d_projection方法，以及修改了draw方法，以适应较新版本的matplotlib
+    不知道这本书的作者用的matplotlib是什么版本的
+    import matplotlib
+    print(matplotlib.__version__)
+    我用的是3.9.2
+    """
     def __init__(self, xs, ys, zs, *args, **kwargs):
         FancyArrowPatch.__init__(self, (0,0), (0,0), *args, **kwargs)
         self._verts3d = xs, ys, zs
 
     def draw(self, renderer):
         xs3d, ys3d, zs3d = self._verts3d
-        xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, renderer.M)
+        # Get the 3D axes from the current figure
+        ax = self.axes or plt.gca()
+        if hasattr(ax, 'M'):
+            xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, ax.M)
+        else:
+            # Fallback for newer matplotlib versions
+            xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, ax.get_proj())
         self.set_positions((xs[0],ys[0]),(xs[1],ys[1]))
         FancyArrowPatch.draw(self, renderer)
+
+    def do_3d_projection(self, renderer=None):
+        xs3d, ys3d, zs3d = self._verts3d
+        if renderer is not None:
+            # Get the 3D axes
+            ax = self.axes or plt.gca()
+            if hasattr(ax, 'M'):
+                xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, ax.M)
+            else:
+                # Fallback for newer matplotlib versions
+                xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, ax.get_proj())
+            self.set_positions((xs[0], ys[0]), (xs[1], ys[1]))
+            return zs[0]
+        else:
+            return 0
 
 
 class Polygon3D():
