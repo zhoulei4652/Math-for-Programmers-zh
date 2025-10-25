@@ -1,7 +1,6 @@
-from vectors import to_polar, to_cartesian
 from teapot import load_triangles
 from draw_model import draw_model
-from math import pi
+from vectors import add
 
 def polygon_map(transformation, polygons):
     return [
@@ -9,20 +8,9 @@ def polygon_map(transformation, polygons):
         for triangle in polygons
     ]
 
-def rotate2d(angle, vector):
-    # 将传入的笛卡尔左边转换为极坐标
-    l,a = to_polar(vector)
-    # 加上角度之后，再将旋转之后的极坐标再转换成笛卡尔坐标
-    return to_cartesian((l, a+angle))
-
-def rotate_z(angle, vector):
-    x,y,z = vector
-    new_x, new_y = rotate2d(angle, (x,y))
-    return new_x, new_y, z
-
-def rotate_z_by(angle):
+def translate_by(translation):
     def new_function(v):
-        return rotate_z(angle,v)
+        return add(translation, v)
     return new_function
 
 ####################################################################
@@ -32,7 +20,7 @@ def rotate_z_by(angle):
 import sys
 import camera
 if '--snapshot' in sys.argv:
-    camera.default_camera = camera.Camera('fig_4.11_rotate_teapot',[0])
+    camera.default_camera = camera.Camera('MINIPROJ_4.3b',[0])
 ####################################################################
 
-draw_model(polygon_map(rotate_z_by(pi/4.), load_triangles()))
+draw_model(polygon_map(translate_by((0,0,-20)),load_triangles()))

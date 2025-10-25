@@ -52,8 +52,7 @@ def extract_vectors_2d(objects):
         else:
             raise TypeError("Unrecognized object: {}".format(object))
 
-def draw2d(*objects, origin=True, axes=True, grid=(1,1), nice_aspect_ratio=True,
-            width=6, save_as=None):
+def draw2d(*objects, origin=True, axes=True, grid=(1,1), nice_aspect_ratio=True, width=6, save_as=None):
 
     all_vectors = list(extract_vectors_2d(objects))
     xs, ys = zip(*all_vectors)
@@ -104,7 +103,8 @@ def draw2d(*objects, origin=True, axes=True, grid=(1,1), nice_aspect_ratio=True,
                     plt.plot([x1,x2],[y1,y2], color=object.color)
             if object.fill:
                 patches = []
-                poly = Polygon(object.vertices, True)
+                # poly = Polygon(object.vertices, closed=True) 新版本的 matplotlib 要求使用关键字参数 closed=True 而不是位置参数
+                poly = Polygon(object.vertices, closed=True)
                 patches.append(poly)
                 p = PatchCollection(patches, color=object.fill)
                 plt.gca().add_collection(p)

@@ -61,6 +61,24 @@ def cross(u, v):
     return (uy*vz - uz*vy, uz*vx - ux*vz, ux*vy - uy*vx)
 
 def component(v,direction):
+    """
+    计算向量v在给定方向上的分量
+
+    数学原理：
+    向量v在方向direction上的分量可以通过点积计算得出：
+    component = (v · direction) / |direction|
+    点积的几何意义：
+        ①.两个向量的点积：v · direction = |v| * |direction| * cos(θ)
+        ②.其中 θ 是两个向量之间的夹角
+    推导过程：
+        ①.将点积公式代入分量计算公式：cos(θ) = (v · direction) / (|v| * |direction|)
+        ②.向量 v 在 direction 方向上的投影长度（带符号）为：投影长度 = |v| * cos(θ)
+        ③.将 cos(θ) 的表达式代入投影长度公式，得到：投影长度 = (v · direction) / |direction|
+    其中，v · direction表示向量v与方向direction的点积，|direction|表示方向direction的长度（模）。
+    这个公式的意义在于，点积反映了两个向量在同一方向上的投影，而除以方向的长度则将这个投影归一化，得到在该方向上的实际分量大小。
+    该分量表示了向量v在指定方向上的投影长度，反映了v在该方向上的影响力或贡献度。
+    通过这个计算，我们可以了解向量v在特定方向上的表现，从而在物理学、工程学等领域中应用这一概念进行分析和计算。
+    """
     return (dot(v,direction) / length(direction))
 
 def unit(v):
