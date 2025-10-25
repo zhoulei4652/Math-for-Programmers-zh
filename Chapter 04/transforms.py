@@ -4,10 +4,10 @@ from vectors import *
 # Vector transformation functions we'll introduce in Chapter 4 #
 ################################################################
 
-# def compose(f1,f2):
-#     def new_function(input):
-#         return f1(f2(input))
-#     return new_function
+def compose_1(f1,f2):
+    def new_function(input):
+        return f1(f2(input))
+    return new_function
 
 # def compose(f1,f2):
 #     return lambda x: f1(f2(x))
