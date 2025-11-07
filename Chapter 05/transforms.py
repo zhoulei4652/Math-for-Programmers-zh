@@ -90,3 +90,21 @@ def linear_combination(scalars,*vectors):
 
 def multiply_matrix_vector(matrix, vector):
     return linear_combination(vector, *zip(*matrix))
+
+def infer_matrix(n, transformation):
+
+    def standard_basis_vector(i):
+        # 构造标准基向量，例如n=3
+        # 1	(1,0,0)
+        # 2	(0,1,0)
+        # 3	(0,0,1)
+        return tuple(1 if i==j else 0 for j in range(1,n+1))
+    
+    # 这一步的作用是生成标准基向量列表(上边standard_basis_vector函数是按照行生成的标准基向量)
+    standard_basis = [standard_basis_vector(i) for i in range(1,n+1)]
+
+    # 这一步的作用是对标准基向量进行变换
+    cols = [transformation(v) for v in standard_basis]
+
+    # 这一步的作用是将变换后的列向量转换为矩阵形式
+    return tuple(zip(*cols)) 
